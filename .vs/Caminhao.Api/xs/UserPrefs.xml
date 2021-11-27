@@ -1,0 +1,32 @@
+﻿<Properties StartupConfiguration="{E8BA1B0E-5C8C-4687-943D-DC97F687A610}|Keymaster.Api.Application">
+  <MonoDevelop.Ide.ItemProperties.src.Caminhao.Api.Application PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../.microsoft/usersecrets/67cb703d-c857-4ec1-9b54-4fe3d206edae/secrets.json">
+    <Files>
+      <File FileName="Caminhao.Api.Application/appsettings.json" Line="1" Column="1" />
+      <File FileName="../../../../.microsoft/usersecrets/67cb703d-c857-4ec1-9b54-4fe3d206edae/secrets.json" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Caminhao.Api" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="Caminhao.Api.Application" expanded="True">
+                <Node name="appsettings.json" expanded="True" selected="True" />
+              </Node>
+              <Node name="Caminhao.Api.Infrastructure" expanded="True" />
+            </Node>
+            <Node name="test" expanded="True">
+              <Node name="Caminhao.Api.Test" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
