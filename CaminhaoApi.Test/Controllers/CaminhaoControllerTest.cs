@@ -1,5 +1,6 @@
 using CaminhaoApi.Domain.CaminhaoAggregate;
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -10,42 +11,188 @@ namespace CaminhaoApi.Test.Controllers
 {
     public class CaminhaoControllerTest : TestStartup
     {
-        private readonly string route = "caminhao/";
+        private readonly string route = "Caminhao/";
 
         [Fact]
-        public async Task PostNewCaminhaoShouldReturnHttpStatusCodeOK()
+        public async Task PostParaCadastrarCaminhaoDeveRetornarHttpStatusCodeOK()
         {
+            // Arrange
             Caminhao caminhao = new()
             {
                 Marca = "DAF",
                 Modelo = Modelo.FH,
-                AnoModelo = 2021
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year
             };
 
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}create", caminhao);
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
 
-            Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-
-            caminhao.Id = caminhao1.Id;
-            caminhao1.Equals(caminhao).Should().BeTrue();
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.OK, $"should not be prime");
         }
 
         [Fact]
-        public async Task PostRequestWithBodyNullToCreateNewCaminhaoShouldReturnHttpStatusCodeBadRequest()
+        public async Task PostParaCadastrarCaminhaoDeveRetornarCaminhaoComUmIdEOsMesmosAtributosCadastrados()
         {
-            HttpResponseMessage response2 = await _testClient.PostAsJsonAsync<Caminhao>($"{route}create", null);
-            response2.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                Modelo = Modelo.FH,
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
+
+            // Assert
+            Assert.False(string.IsNullOrEmpty(caminhao1.Id));
+            Assert.True(caminhao1.Marca == caminhao.Marca);
+            Assert.True(caminhao1.Modelo == caminhao.Modelo);
+            Assert.True(caminhao1.AnoFabricacao == caminhao.AnoFabricacao);
+            Assert.True(caminhao1.AnoModelo == caminhao.AnoModelo);
+        }
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComModeloDiferenteDeFHeFMDeveRetornarHttpStatusCodeBadRequest()
+        {
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComAnoDeFabricacaoMenorQueOAtualDeveRetornarHttpStatusCodeBadRequest()
+        {
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                Modelo = Modelo.FH,
+                AnoFabricacao = DateTime.Now.Year - 1,
+                AnoModelo = DateTime.Now.Year
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComAnoDeFabricacaoMaoirQueOAtualDeveRetornarHttpStatusCodeBadRequest()
+        {
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                Modelo = Modelo.FH,
+                AnoFabricacao = DateTime.Now.Year + 1,
+                AnoModelo = DateTime.Now.Year
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComAnoDoModeloSubsequenteAoAtualDeveRetornarHttpStatusCodeOK()
+        {
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                Modelo = Modelo.FH,
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year + 1
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComAnoDoModeloMaiorQueOSubsequenteAoAtualDeveRetornarHttpStatusCodeBadRequest()
+        {
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                Modelo = Modelo.FH,
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year + 2
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComAnoDoModeloMenorQueOAtualDeveRetornarHttpStatusCodeBadRequest()
+        {
+            // Arrange
+            Caminhao caminhao = new()
+            {
+                Marca = "DAF",
+                Modelo = Modelo.FH,
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year - 1
+            };
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+        }
+
+
+        [Fact]
+        public async Task PostParaCadastrarCaminhaoComObjetoNuloDeveRetornarHttpStatusCodeBadRequest()
+        {
+            // Arrange
+            Caminhao caminhao = null;
+
+            // Act
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync<Caminhao>($"{route}cadastrarcaminhao", caminhao);
+
+            // Assert
+            Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
         }
 
         [Fact]
         public async Task GetRequestToGetTodosCaminhoesShouldReturnHttpStatusCodeOK()
         {
+            // Arrange
             Caminhao caminhao = new()
             {
                 Marca = "Iveco",
                 Modelo = Modelo.FM,
-                AnoModelo = 2020
+                AnoFabricacao = DateTime.Now.Year,
+                AnoModelo = DateTime.Now.Year
             };
 
             await _testClient.PostAsJsonAsync($"{route}create", caminhao);

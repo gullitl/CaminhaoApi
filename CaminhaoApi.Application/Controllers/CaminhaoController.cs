@@ -2,7 +2,6 @@
 using CaminhaoApi.Domain.CaminhaoAggregate;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace CaminhaoApi.Application.Controllers
@@ -18,39 +17,19 @@ namespace CaminhaoApi.Application.Controllers
             _serviceCaminhao = serviceCaminhao;
         }
 
-        [HttpGet("getall")]
-        public async Task<ActionResult<List<Caminhao>>> GetAll() => await _serviceCaminhao.ObterTodosCaminhoes();
+        [HttpGet("obtertodososcaminhoes")]
+        public async Task<ActionResult<List<Caminhao>>> ObterTodosOsCaminhoes() => await _serviceCaminhao.ObterTodosOsCaminhoes();
 
-        [HttpGet("getbyid")]
-        public async Task<ActionResult<Caminhao>> GetById(string id)
-        {
-            Caminhao caminhao = await _serviceCaminhao.ObterCaminhaoPorId(id);
+        [HttpGet("obtercaminhaoporid")]
+        public async Task<ActionResult<Caminhao>> ObterCaminhaoPorId(string id) => await _serviceCaminhao.ObterCaminhaoPorId(id);
 
-            if (caminhao == null)
-                return NotFound("Caminhão não encontrado");
+        [HttpPost("cadastrarcaminhao")]
+        public async Task<ActionResult<Caminhao>> CadastrarCaminhao(Caminhao caminhao) => await _serviceCaminhao.CadastrarCaminhao(caminhao);
 
-            return caminhao;
-        }
+        [HttpPut("atualizarcaminhao")]
+        public async Task<ActionResult<Caminhao>> AtualizarCaminhao(Caminhao caminhao) => await _serviceCaminhao.AtualizarCaminhao(caminhao);
 
-        [HttpPost("create")]
-        public async Task<ActionResult<Caminhao>> Create(Caminhao caminhao)
-        {
-            Validator.ValidateObject(caminhao, new ValidationContext(caminhao, null, null), true);
-            return await _serviceCaminhao.CadastrarCaminhao(caminhao);
-        }
-
-        [HttpPut("update")]
-        public async Task<ActionResult<Caminhao>> Update(Caminhao caminhao)
-        {
-            Validator.ValidateObject(caminhao, new ValidationContext(caminhao, null, null), true);
-            return await _serviceCaminhao.AtualizarCaminhao(caminhao);
-        }
-
-        [HttpDelete("delete")]
-        public async Task<ActionResult<bool>> Delete(string id)
-        {
-            await _serviceCaminhao.RemoverCaminhao(id);
-            return true;
-        }
+        [HttpDelete("removercaminhao")]
+        public async Task<ActionResult<bool>> RemoverCaminhao(string id) => await _serviceCaminhao.RemoverCaminhao(id);
     }
 }

@@ -12,7 +12,7 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
         Task<TEntity> ObterPorId(string id);
         Task<TEntity> Criar(TEntity tEntity);
         Task<TEntity> Atualizar(TEntity tEntity);
-        Task Remover(string id);
+        Task<bool> Remover(string id);
     }
 
     public abstract class CrudContext<TEntity> : ICrudContext<TEntity> where TEntity : class
@@ -97,17 +97,18 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
             }
         }
 
-        public async Task Remover(string id)
+        public async Task<bool> Remover(string id)
         {
             try
             {
                 TEntity tEntity = await _databaseContext.Set<TEntity>().FindAsync(id);
 
-                //if (tEntity == null)
-                //        throw new KeyNotFoundException($"The Id specified for accessing {nameof(TEntity)} record does not match any Id in the database");
+                if (tEntity == null)
+                    throw new KeyNotFoundException($"The Id specified for accessing {typeof(TEntity).Name} record " +
+                                                    "does not match any Id in the database");
 
                 _databaseContext.Set<TEntity>().Remove(tEntity);
-                await _databaseContext.SaveChangesAsync();
+                return await _databaseContext.SaveChangesAsync() == 1;
             }
             catch (DbUpdateException ex)
             {
@@ -119,7 +120,6 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
                 _logger.LogCritical(ex, ex.Message);
                 throw ex;
             }
-
         }
     }
 }

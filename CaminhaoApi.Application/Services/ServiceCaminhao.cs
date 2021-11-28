@@ -9,25 +9,23 @@ namespace CaminhaoApi.Application.Services
 {
     public interface IServiceCaminhao
     {
-        Task<List<Caminhao>> ObterTodosCaminhoes();
+        Task<List<Caminhao>> ObterTodosOsCaminhoes();
         Task<Caminhao> ObterCaminhaoPorId(string id);
         Task<Caminhao> CadastrarCaminhao(Caminhao caminhao);
         Task<Caminhao> AtualizarCaminhao(Caminhao caminhao);
-        Task RemoverCaminhao(string id);
+        Task<bool> RemoverCaminhao(string id);
     }
 
     public class ServiceCaminhao : IServiceCaminhao
     {
-        private readonly ILogger<IServiceCaminhao> _logger;
         private readonly ICaminhaoContext _caminhaoContext;
 
-        public ServiceCaminhao(ILogger<IServiceCaminhao> logger, ICaminhaoContext caminhaoContext)
+        public ServiceCaminhao(ICaminhaoContext caminhaoContext)
         {
-            _logger = logger;
             _caminhaoContext = caminhaoContext;
         }
 
-        public async Task<List<Caminhao>> ObterTodosCaminhoes() => await _caminhaoContext.ObterTodos();
+        public async Task<List<Caminhao>> ObterTodosOsCaminhoes() => await _caminhaoContext.ObterTodos();
 
         public async Task<Caminhao> ObterCaminhaoPorId(string id) => await _caminhaoContext.ObterPorId(id);
 
@@ -43,6 +41,6 @@ namespace CaminhaoApi.Application.Services
             return await _caminhaoContext.Atualizar(caminhao);
         }
 
-        public async Task RemoverCaminhao(string id) => await _caminhaoContext.Remover(id);
+        public async Task<bool> RemoverCaminhao(string id) => await _caminhaoContext.Remover(id);
     }
 }

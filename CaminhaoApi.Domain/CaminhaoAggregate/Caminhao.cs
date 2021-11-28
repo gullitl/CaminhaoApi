@@ -27,7 +27,7 @@ namespace CaminhaoApi.Domain.CaminhaoAggregate
                 yield return new ValidationResult("Ano de Fabricação deve ser o atual");
 
             if (AnoModelo != DateTime.Now.Year && AnoModelo != DateTime.Now.Year + 1)
-                yield return new ValidationResult("Ano de Modelo pode ser o atual ou o ano subsequente");
+                yield return new ValidationResult("Ano do Modelo pode ser o atual ou o ano subsequente");
         }
 
         public override bool Equals(object obj) =>
