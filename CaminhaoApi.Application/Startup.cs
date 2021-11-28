@@ -27,17 +27,18 @@ namespace CaminhaoApi.Application
             services.AddControllers();
             services.AddMvc().AddWebApiConventions();
 
-            services.AddDbContext<DatabaseContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IServiceCaminhao, ServiceCaminhao>();
-            services.AddScoped<ICrudContext, CrudContext>();
+
+            services.AddDbContext<DatabaseContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<ICaminhaoContext, CaminhaoContext>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Caminhao API",
-                    Description = "Copyright © 2021 Caminhao API",
+                    Title = "Caminhao Api",
+                    Description = "Copyright © 2021 Caminhao Api",
                     TermsOfService = new Uri("https://github.com/gullitl/CaminhaoApi"),
                     Contact = new OpenApiContact
                     {

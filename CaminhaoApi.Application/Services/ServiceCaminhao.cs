@@ -19,33 +19,30 @@ namespace CaminhaoApi.Application.Services
     public class ServiceCaminhao : IServiceCaminhao
     {
         private readonly ILogger<IServiceCaminhao> _logger;
-        private readonly ICrudContext _crudContext;
+        private readonly ICaminhaoContext _caminhaoContext;
 
-        public ServiceCaminhao(ILogger<IServiceCaminhao> logger, ICrudContext crudContext)
+        public ServiceCaminhao(ILogger<IServiceCaminhao> logger, ICaminhaoContext caminhaoContext)
         {
             _logger = logger;
-            _crudContext = crudContext;
+            _caminhaoContext = caminhaoContext;
         }
 
-        public async Task<List<Caminhao>> ObterTodosCaminhoes() => await _crudContext.ObterTodos<Caminhao>();
+        public async Task<List<Caminhao>> ObterTodosCaminhoes() => await _caminhaoContext.ObterTodos();
 
-        public async Task<Caminhao> ObterCaminhaoPorId(string id) => await _crudContext.ObterPorId<Caminhao>(id);
+        public async Task<Caminhao> ObterCaminhaoPorId(string id) => await _caminhaoContext.ObterPorId(id);
 
         public async Task<Caminhao> CadastrarCaminhao(Caminhao caminhao)
         {
             Validator.ValidateObject(caminhao, new ValidationContext(caminhao, null, null), true);
-            return await _crudContext.Criar(caminhao);
+            return await _caminhaoContext.Criar(caminhao);
         }
 
         public async Task<Caminhao> AtualizarCaminhao(Caminhao caminhao)
         {
             Validator.ValidateObject(caminhao, new ValidationContext(caminhao, null, null), true);
-            return await _crudContext.Atualizar(caminhao);
+            return await _caminhaoContext.Atualizar(caminhao);
         }
 
-        public async Task RemoverCaminhao(string id)
-        {
-            await _crudContext.Remover<Caminhao>(id);
-        }
+        public async Task RemoverCaminhao(string id) => await _caminhaoContext.Remover(id);
     }
 }

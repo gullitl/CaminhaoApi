@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 
 namespace CaminhaoApi.Infrastructure.Database.Contexts
 {
-    public interface ICrudContext
+    public interface ICrudContext<TEntity>
     {
-        Task<List<TEntity>> ObterTodos<TEntity>() where TEntity : class;
-        Task<TEntity> ObterPorId<TEntity>(string id) where TEntity : class;
-        Task<TEntity> Criar<TEntity>(TEntity tEntity) where TEntity : class;
-        Task<TEntity> Atualizar<TEntity>(TEntity tEntity) where TEntity : class;
-        Task Remover<TEntity>(string id) where TEntity : class;
+        Task<List<TEntity>> ObterTodos();
+        Task<TEntity> ObterPorId(string id);
+        Task<TEntity> Criar(TEntity tEntity);
+        Task<TEntity> Atualizar(TEntity tEntity);
+        Task Remover(string id);
     }
 
-    public abstract class CrudContext : ICrudContext
+    public abstract class CrudContext<TEntity> : ICrudContext<TEntity> where TEntity : class
     {
-        private readonly ILogger<CrudContext> _logger;
-        private readonly DatabaseContext Context;
+        private readonly ILogger<ICrudContext<TEntity>> _logger;
+        protected readonly DatabaseContext _databaseContext;
 
-        public CrudContext(ILogger<CrudContext> logger, DatabaseContext context)
+        public CrudContext(ILogger<ICrudContext<TEntity>> logger, DatabaseContext databaseContext)
         {
             _logger = logger;
-            Context = context;
+            _databaseContext = databaseContext;
         }
 
-        public async Task<List<TEntity>> ObterTodos<TEntity>() where TEntity : class
+        public async Task<List<TEntity>> ObterTodos()
         {
             try
             {
-                return await Context.Set<TEntity>().ToListAsync();
+                return await _databaseContext.Set<TEntity>().ToListAsync();
             }
             catch (InvalidOperationException ex)
             {
@@ -39,11 +39,11 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
             }
         }
 
-        public async Task<TEntity> ObterPorId<TEntity>(string id) where TEntity : class
+        public async Task<TEntity> ObterPorId(string id)
         {
             try
             {
-                return await Context.Set<TEntity>().FindAsync(id);
+                return await _databaseContext.Set<TEntity>().FindAsync(id);
             }
             catch (InvalidOperationException ex)
             {
@@ -57,12 +57,12 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
             }
         }
 
-        public async Task<TEntity> Criar<TEntity>(TEntity tEntity) where TEntity : class
+        public async Task<TEntity> Criar(TEntity tEntity)
         {
             try
             {
-                Context.Set<TEntity>().Add(tEntity);
-                await Context.SaveChangesAsync();
+                _databaseContext.Set<TEntity>().Add(tEntity);
+                await _databaseContext.SaveChangesAsync();
                 return tEntity;
             }
             catch (InvalidOperationException ex)
@@ -77,12 +77,12 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
             }
         }
 
-        public async Task<TEntity> Atualizar<TEntity>(TEntity tEntity) where TEntity : class
+        public async Task<TEntity> Atualizar(TEntity tEntity)
         {
             try
             {
-                Context.Entry(tEntity).State = EntityState.Modified;
-                await Context.SaveChangesAsync();
+                _databaseContext.Entry(tEntity).State = EntityState.Modified;
+                await _databaseContext.SaveChangesAsync();
                 return tEntity;
             }
             catch (DbUpdateException ex)
@@ -97,17 +97,17 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
             }
         }
 
-        public async Task Remover<TEntity>(string id) where TEntity : class
+        public async Task Remover(string id)
         {
             try
             {
-                TEntity tEntity = await Context.Set<TEntity>().FindAsync(id);
+                TEntity tEntity = await _databaseContext.Set<TEntity>().FindAsync(id);
 
                 //if (tEntity == null)
                 //        throw new KeyNotFoundException($"The Id specified for accessing {nameof(TEntity)} record does not match any Id in the database");
 
-                Context.Set<TEntity>().Remove(tEntity);
-                await Context.SaveChangesAsync();
+                _databaseContext.Set<TEntity>().Remove(tEntity);
+                await _databaseContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
