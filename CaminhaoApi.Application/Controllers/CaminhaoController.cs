@@ -11,20 +11,20 @@ namespace CaminhaoApi.Application.Controllers
     [Route("[controller]")]
     public class CaminhaoController : ControllerBase
     {
-        private readonly ICaminhaoService _caminhaoService;
+        private readonly IServiceCaminhao _serviceCaminhao;
 
-        public CaminhaoController(ICaminhaoService userService)
+        public CaminhaoController(IServiceCaminhao serviceCaminhao)
         {
-            _caminhaoService = userService;
+            _serviceCaminhao = serviceCaminhao;
         }
 
         [HttpGet("getall")]
-        public async Task<ActionResult<List<Caminhao>>> GetAll() => Ok(await _caminhaoService.GetAll());
+        public async Task<ActionResult<List<Caminhao>>> GetAll() => await _serviceCaminhao.ObterTodosCaminhoes();
 
         [HttpGet("getbyid")]
         public async Task<ActionResult<Caminhao>> GetById(string id)
         {
-            Caminhao caminhao = await _caminhaoService.GetById(id);
+            Caminhao caminhao = await _serviceCaminhao.ObterCaminhaoPorId(id);
 
             if (caminhao == null)
                 return NotFound("Caminhão não encontrado");
@@ -36,17 +36,21 @@ namespace CaminhaoApi.Application.Controllers
         public async Task<ActionResult<Caminhao>> Create(Caminhao caminhao)
         {
             Validator.ValidateObject(caminhao, new ValidationContext(caminhao, null, null), true);
-            return await _caminhaoService.Create(caminhao);
+            return await _serviceCaminhao.CadastrarCaminhao(caminhao);
         }
 
         [HttpPut("update")]
         public async Task<ActionResult<Caminhao>> Update(Caminhao caminhao)
         {
             Validator.ValidateObject(caminhao, new ValidationContext(caminhao, null, null), true);
-            return await _caminhaoService.Update(caminhao);
+            return await _serviceCaminhao.AtualizarCaminhao(caminhao);
         }
 
         [HttpDelete("delete")]
-        public async Task<ActionResult<bool>> Delete(string id) => await _caminhaoService.Delete(id);
+        public async Task<ActionResult<bool>> Delete(string id)
+        {
+            await _serviceCaminhao.RemoverCaminhao(id);
+            return true;
+        }
     }
 }

@@ -28,7 +28,8 @@ namespace CaminhaoApi.Application
             services.AddMvc().AddWebApiConventions();
 
             services.AddDbContext<DatabaseContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<ICaminhaoService, CaminhaoService>();
+            services.AddScoped<IServiceCaminhao, ServiceCaminhao>();
+            services.AddScoped<ICrudContext, CrudContext>();
 
             services.AddSwaggerGen(c =>
             {

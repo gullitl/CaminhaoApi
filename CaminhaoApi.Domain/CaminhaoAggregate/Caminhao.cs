@@ -32,12 +32,12 @@ namespace CaminhaoApi.Domain.CaminhaoAggregate
         }
 
         public override bool Equals(object obj) =>
-            obj is Caminhao user &&
-            Id == user.Id &&
-            Marca == user.Marca &&
-            Modelo == user.Modelo &&
-            AnoFabricacao == user.AnoFabricacao &&
-            AnoModelo == user.AnoModelo;
+            obj is Caminhao caminhao &&
+            Id == caminhao.Id &&
+            Marca == caminhao.Marca &&
+            Modelo == caminhao.Modelo &&
+            AnoFabricacao == caminhao.AnoFabricacao &&
+            AnoModelo == caminhao.AnoModelo;
 
         public override int GetHashCode()
         {

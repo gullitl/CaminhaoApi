@@ -13,7 +13,7 @@ namespace CaminhaoApi.Test.Controllers
         private readonly string route = "caminhao/";
 
         [Fact]
-        public async Task PostNewUserShouldReturnHttpStatusCodeOK()
+        public async Task PostNewCaminhaoShouldReturnHttpStatusCodeOK()
         {
             Caminhao caminhao = new()
             {
@@ -32,89 +32,89 @@ namespace CaminhaoApi.Test.Controllers
         }
 
         [Fact]
-        public async Task PostRequestWithBodyNullToCreateUserShouldReturnHttpStatusCodeBadRequest()
+        public async Task PostRequestWithBodyNullToCreateNewCaminhaoShouldReturnHttpStatusCodeBadRequest()
         {
             HttpResponseMessage response2 = await _testClient.PostAsJsonAsync<Caminhao>($"{route}create", null);
             response2.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
-        public async Task GetRequestToGetAllUsersShouldReturnHttpStatusCodeOK()
+        public async Task GetRequestToGetTodosCaminhoesShouldReturnHttpStatusCodeOK()
         {
-            Caminhao user = new()
+            Caminhao caminhao = new()
             {
                 Marca = "Iveco",
                 Modelo = Modelo.FM,
                 AnoModelo = 2020
             };
 
-            await _testClient.PostAsJsonAsync($"{route}create", user);
+            await _testClient.PostAsJsonAsync($"{route}create", caminhao);
 
             HttpResponseMessage response = await _testClient.GetAsync($"{route}getall");
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Fact]
-        public async Task GetRequestToGetAllUsersShouldReturnListOfUsers()
+        public async Task GetRequestToGetAllCaminhoesShouldReturnListOfCaminhoes()
         {
-            Caminhao user = new()
+            Caminhao caminhao = new()
             {
                 Marca = "Mercedes-Benz",
                 Modelo = Modelo.FH,
                 AnoModelo = 2019
             };
 
-            await _testClient.PostAsJsonAsync($"{route}create", user);
+            await _testClient.PostAsJsonAsync($"{route}create", caminhao);
 
             HttpResponseMessage response = await _testClient.GetAsync($"{route}getall");
-            IList<Caminhao> users = await response.Content.ReadAsAsync<List<Caminhao>>();
-            users.Should().NotBeEmpty();
+            IList<Caminhao> caminhaos = await response.Content.ReadAsAsync<List<Caminhao>>();
+            caminhaos.Should().NotBeEmpty();
         }
 
         [Fact]
         public async Task TestGetById()
         {
-            Caminhao user = new()
+            Caminhao caminhao = new()
             {
                 Marca = "MAN",
                 Modelo = Modelo.FH,
                 AnoModelo = 2019
             };
 
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}create", user);
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}create", caminhao);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            Caminhao user1 = await response.Content.ReadAsAsync<Caminhao>();
+            Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
 
-            HttpResponseMessage response1 = await _testClient.GetAsync($"{route}getbyid?id=" + user1.Id);
+            HttpResponseMessage response1 = await _testClient.GetAsync($"{route}getbyid?id=" + caminhao1.Id);
             response1.StatusCode.Should().Be(HttpStatusCode.OK);
             Caminhao u = await response1.Content.ReadAsAsync<Caminhao>();
-            u.Equals(user1).Should().BeTrue();
+            u.Equals(caminhao1).Should().BeTrue();
 
-            HttpResponseMessage response2 = await _testClient.DeleteAsync($"{route}delete?id=" + user1.Id);
+            HttpResponseMessage response2 = await _testClient.DeleteAsync($"{route}delete?id=" + caminhao1.Id);
             response2.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            HttpResponseMessage response3 = await _testClient.GetAsync($"{route}getbyid?id=" + user1.Id);
+            HttpResponseMessage response3 = await _testClient.GetAsync($"{route}getbyid?id=" + caminhao1.Id);
             response3.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
         public async Task TestDelete()
         {
-            Caminhao user = new()
+            Caminhao caminhao = new()
             {
                 Marca = "Scania",
                 Modelo = Modelo.FH,
                 AnoModelo = 2019
             };
 
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}create", user);
+            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}create", caminhao);
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            Caminhao user1 = await response.Content.ReadAsAsync<Caminhao>();
+            Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
 
-            HttpResponseMessage response1 = await _testClient.DeleteAsync($"{route}delete?id=" + user1.Id);
+            HttpResponseMessage response1 = await _testClient.DeleteAsync($"{route}delete?id=" + caminhao1.Id);
             response1.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            HttpResponseMessage response2 = await _testClient.GetAsync($"{route}getbyid?id=" + user1.Id);
+            HttpResponseMessage response2 = await _testClient.GetAsync($"{route}getbyid?id=" + caminhao1.Id);
             response2.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 

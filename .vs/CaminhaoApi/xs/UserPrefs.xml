@@ -1,27 +1,24 @@
 ﻿<Properties StartupConfiguration="{E8BA1B0E-5C8C-4687-943D-DC97F687A610}|Keymaster.Api.Application">
-  <MonoDevelop.Ide.Workbench ActiveDocument="CaminhaoApi.Domain/CaminhaoAggregate/Caminhao.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs">
     <Files>
-      <File FileName="CaminhaoApi.Application/Controllers/CaminhaoController.cs" Line="16" Column="10" />
-      <File FileName="CaminhaoApi.Application/Services/CrudService.cs" Line="33" Column="53" />
-      <File FileName="CaminhaoApi.Application/Services/CaminhaoService.cs" Line="10" Column="1" />
-      <File FileName="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" Line="29" Column="1" />
+      <File FileName="CaminhaoApi.Application/Controllers/CaminhaoController.cs" Line="15" Column="1" />
+      <File FileName="CaminhaoApi.Application/Services/CaminhaoService.cs" Line="19" Column="33" />
       <File FileName="CaminhaoApi.Test/TestStartup.cs" Line="16" Column="35" />
-      <File FileName="CaminhaoApi.Infrastructure/Database/DatabaseContext.cs" Line="15" Column="81" />
-      <File FileName="CaminhaoApi.Domain/CaminhaoAggregate/Caminhao.cs" Line="17" Column="24" />
+      <File FileName="CaminhaoApi.Domain/CaminhaoAggregate/Caminhao.cs" Line="30" Column="4" />
+      <File FileName="CaminhaoApi.Infrastructure/Database/CrudContext.cs" Line="112" Column="36" />
+      <File FileName="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" Line="88" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="CaminhaoApi" expanded="True">
+          <Node name="CaminhaoApi" expanded="True" selected="True">
             <Node name="src" expanded="True">
               <Node name="CaminhaoApi.Application" expanded="True">
                 <Node name="Controllers" expanded="True" />
                 <Node name="Services" expanded="True" />
               </Node>
               <Node name="CaminhaoApi.Domain" expanded="True">
-                <Node name="CaminhaoAggregate" expanded="True">
-                  <Node name="Caminhao.cs" selected="True" />
-                </Node>
+                <Node name="CaminhaoAggregate" expanded="True" />
               </Node>
               <Node name="CaminhaoApi.Infrastructure" expanded="True">
                 <Node name="Database" expanded="True" />
@@ -29,7 +26,6 @@
             </Node>
             <Node name="test" expanded="True">
               <Node name="CaminhaoApi.Test" expanded="True">
-                <Node name="Dependencies" expanded="True" />
                 <Node name="Controllers" expanded="True" />
               </Node>
             </Node>
@@ -57,7 +53,14 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Infrastructure/Database/CrudContext.cs" relfile="CaminhaoApi.Infrastructure/Database/CrudContext.cs" line="114" column="1" />
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Infrastructure/Database/CrudContext.cs" relfile="CaminhaoApi.Infrastructure/Database/CrudContext.cs" line="119" column="1" />
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Infrastructure/Database/CrudContext.cs" relfile="CaminhaoApi.Infrastructure/Database/CrudContext.cs" line="90" column="1" />
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Infrastructure/Database/CrudContext.cs" relfile="CaminhaoApi.Infrastructure/Database/CrudContext.cs" line="95" column="1" />
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Infrastructure/Database/CrudContext.cs" relfile="CaminhaoApi.Infrastructure/Database/CrudContext.cs" line="75" column="1" />
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Infrastructure/Database/CrudContext.cs" relfile="CaminhaoApi.Infrastructure/Database/CrudContext.cs" line="70" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.src.CaminhaoApi.Application PreferredExecutionTarget="/Applications/Safari.app" />
