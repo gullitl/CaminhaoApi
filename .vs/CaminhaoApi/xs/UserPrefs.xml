@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{E8BA1B0E-5C8C-4687-943D-DC97F687A610}|Keymaster.Api.Application">
   <MonoDevelop.Ide.Workbench ActiveDocument="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs">
     <Files>
-      <File FileName="CaminhaoApi.Application/Controllers/CaminhaoController.cs" Line="14" Column="1" />
-      <File FileName="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" Line="116" Column="66" />
+      <File FileName="CaminhaoApi.Application/Controllers/CaminhaoController.cs" Line="32" Column="37" />
+      <File FileName="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" Line="319" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -28,12 +28,9 @@
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">
         <State name="__root__">
-          <Node name="CaminhaoApi" expanded="True">
+          <Node name="CaminhaoApi" expanded="True" selected="True">
             <Node name="test" expanded="True">
               <Node name="CaminhaoApi.Test" expanded="True">
                 <Node name="CaminhaoApi.Test.Controllers" expanded="True">
