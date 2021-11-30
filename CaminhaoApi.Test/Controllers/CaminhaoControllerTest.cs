@@ -1,6 +1,5 @@
 using CaminhaoApi.Domain.CaminhaoAggregate;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -149,6 +148,7 @@ namespace CaminhaoApi.Test.Controllers
             Caminhao caminhao = new()
             {
                 Marca = "DAF",
+                Modelo = Modelo.RA,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year
             };
@@ -360,6 +360,7 @@ namespace CaminhaoApi.Test.Controllers
             {
                 Id = caminhao1.Id,
                 Marca = "Volvo",
+                Modelo = Modelo.ZQ,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 1
             };

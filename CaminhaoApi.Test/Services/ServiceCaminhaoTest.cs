@@ -125,6 +125,7 @@ namespace CaminhaoApi.Test.Controllers
             Caminhao caminhao = new()
             {
                 Marca = "DAF",
+                Modelo = Modelo.BU,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year
             };
@@ -303,6 +304,7 @@ namespace CaminhaoApi.Test.Controllers
             {
                 Id = caminhao1.Id,
                 Marca = "Volvo",
+                Modelo = Modelo.CE,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 1
             };
