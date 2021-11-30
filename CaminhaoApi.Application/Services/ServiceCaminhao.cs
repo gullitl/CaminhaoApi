@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CaminhaoApi.Domain.CaminhaoAggregate;
 using CaminhaoApi.Infrastructure.Database.Contexts;
-using Microsoft.Extensions.Logging;
 
 namespace CaminhaoApi.Application.Services
 {

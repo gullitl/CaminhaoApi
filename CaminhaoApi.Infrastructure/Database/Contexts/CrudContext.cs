@@ -61,8 +61,10 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
         {
             try
             {
-                _databaseContext.Set<TEntity>().Add(tEntity);
+                _databaseContext.Add(tEntity);
                 await _databaseContext.SaveChangesAsync();
+
+                _databaseContext.Entry(tEntity).State = EntityState.Detached;
                 return tEntity;
             }
             catch (InvalidOperationException ex)
@@ -81,8 +83,10 @@ namespace CaminhaoApi.Infrastructure.Database.Contexts
         {
             try
             {
-                _databaseContext.Entry(tEntity).State = EntityState.Modified;
+                _databaseContext.Update(tEntity);
                 await _databaseContext.SaveChangesAsync();
+
+                _databaseContext.Entry(tEntity).State = EntityState.Detached;
                 return tEntity;
             }
             catch (DbUpdateException ex)

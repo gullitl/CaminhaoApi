@@ -1,19 +1,24 @@
 using CaminhaoApi.Application;
+using CaminhaoApi.Application.Services;
 using CaminhaoApi.Infrastructure.Database.Contexts;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Linq;
 using System.Net.Http;
 
 namespace CaminhaoApi.Test
 {
-    public abstract class TestStartup
+    public abstract class StartupTest
     {
-        protected readonly HttpClient _testClient;
-        protected TestStartup()
+        protected readonly string _routeCaminhao = "Caminhao/";
+        protected readonly HttpClient _httpClientTest;
+        protected readonly IServiceCaminhao _serviceCaminhao;
+
+        protected StartupTest()
         {
-            WebApplicationFactory<Startup> appFactory = new WebApplicationFactory<Startup>()
+            var appFactory = new WebApplicationFactory<Startup>()
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
@@ -26,7 +31,9 @@ namespace CaminhaoApi.Test
                     });
                 });
             IServiceScope scope = appFactory.Services.CreateScope();
-            _testClient = appFactory.CreateClient();
+
+            _httpClientTest = appFactory.CreateClient();
+            _serviceCaminhao = scope.ServiceProvider.GetServices<IServiceCaminhao>().FirstOrDefault();
         }
     }
 }

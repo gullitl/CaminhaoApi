@@ -8,9 +8,8 @@ using Xunit;
 
 namespace CaminhaoApi.Test.Controllers
 {
-    public class CaminhaoControllerTest : TestStartup
+    public class CaminhaoControllerTest : StartupTest
     {
-        private readonly string route = "Caminhao/";
 
         [Fact]
         public async Task GetParaObterTodosOsCaminhoesDeveRetornarHttpStatusCodeOK()
@@ -25,32 +24,11 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
-            HttpResponseMessage response = await _testClient.GetAsync($"{route}obtertodososcaminhoes");
+            await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.GetAsync($"{_routeCaminhao}obtertodososcaminhoes");
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.OK, "Get para obter todos os caminhoes deve retornar HttpStatusCode.OK");
-        }
-
-        [Fact]
-        public async Task GetParaObterTodosOsCaminhoesDeveRetornarUmaListaDeCaminhoes()
-        {
-            // Arrange
-            Caminhao caminhao = new()
-            {
-                Marca = "Mercedes-Benz",
-                Modelo = Modelo.FH,
-                AnoFabricacao = DateTime.Now.Year,
-                AnoModelo = DateTime.Now.Year
-            };
-
-            // Act
-            await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
-            HttpResponseMessage response = await _testClient.GetAsync($"{route}obtertodososcaminhoes");
-            var caminhoes = await response.Content.ReadAsAsync<List<Caminhao>>();
-
-            // Assert
-            Assert.True(caminhoes is List<Caminhao>, "Get para obter todos os Caminhões deve retornar uma lista de Caminhões");
         }
 
         [Fact]
@@ -66,23 +44,23 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
 
-            HttpResponseMessage response2 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
+            HttpResponseMessage response2 = await _httpClientTest.GetAsync($"{_routeCaminhao}obtercaminhaoporid?id={caminhao1.Id}");
 
             // Assert
             Assert.True(response2.StatusCode == HttpStatusCode.OK, "Get para obter Caminhão por Id deve retornar HttpStatusCode.OK");
         }
 
         [Fact]
-        public async Task GetParaObterCaminhaoPorIdNaoInexistenteDeveRetornarHttpStatusCodeNoContent()
+        public async Task GetParaObterCaminhaoPorIdInexistenteDeveRetornarHttpStatusCodeNoContent()
         {
             // Arrange
             var id = "IdInexistente";
 
             // Act
-            HttpResponseMessage response = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={id}");
+            HttpResponseMessage response = await _httpClientTest.GetAsync($"{_routeCaminhao}obtercaminhaoporid?id={id}");
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.NoContent, "Get para obter Caminhão por Id inexistente " +
@@ -102,7 +80,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.OK, "Post para cadastrar Caminhão deve retornar HttpStatusCode.OK");
@@ -121,10 +99,10 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
                 Id = caminhao1.Id,
                 Marca = "Foton",
@@ -133,7 +111,7 @@ namespace CaminhaoApi.Test.Controllers
                 AnoModelo = DateTime.Now.Year
             };
 
-            HttpResponseMessage response2 = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao3);
+            HttpResponseMessage response2 = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao2);
 
             // Assert
             Assert.True(response2.StatusCode == HttpStatusCode.InternalServerError, "Post para cadastrar Caminhão com Id já existente " +
@@ -153,7 +131,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
 
             // Assert
@@ -176,7 +154,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Post para cadastrar Caminhão com Modelo diferente de FH e FM " +
@@ -196,7 +174,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Post para cadastrar Caminhão com Ano de Fabricação menor que o atual " +
@@ -216,7 +194,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Post para cadastrar Caminhão com Ano de Fabricação maoir que o atual " +
@@ -236,7 +214,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.OK, "Post para cadastrar Caminhão com Ano do Modelo subsequente ao atual " +
@@ -256,7 +234,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Post para cadastrar Caminhão com Ano do Modelo maior que o subsequente ao atual " +
@@ -276,7 +254,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Post para cadastrar Caminhão com Ano do Modelo menor que o atual " +
@@ -291,7 +269,7 @@ namespace CaminhaoApi.Test.Controllers
             Caminhao caminhao = null;
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync<Caminhao>($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync<Caminhao>($"{_routeCaminhao}cadastrarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Post para cadastrar Caminhão com Objeto nulo " +
@@ -311,24 +289,22 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 1
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.OK, "Put para atualizar Caminhão deve retornar HttpStatusCode.OK");
+            Assert.True(response1.StatusCode == HttpStatusCode.OK, "Put para atualizar Caminhão deve retornar HttpStatusCode.OK");
         }
 
         [Fact]
@@ -344,26 +320,24 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 1
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
-            Caminhao caminhao4 = await response3.Content.ReadAsAsync<Caminhao>();
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
+            Caminhao caminhao3 = await response1.Content.ReadAsAsync<Caminhao>();
 
             // Assert
-            Assert.True(caminhao4.Id == caminhao1.Id, "Put para atualizar Caminhão deve retornar Caminhão com mesmo Id");
-            Assert.True(caminhao4.Equals(caminhao3), "Put para atualizar Caminhão deve retornar Caminhão igual o atualizado (com todos os atributos iguais)");
+            Assert.True(caminhao3.Id == caminhao1.Id, "Put para atualizar Caminhão deve retornar Caminhão com mesmo Id");
+            Assert.True(caminhao3.Equals(caminhao2), "Put para atualizar Caminhão deve retornar Caminhão igual o atualizado (com todos os atributos iguais)");
         }
 
         [Fact]
@@ -379,23 +353,21 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 1
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Modelo diferente de FH e FM " +
+            Assert.True(response1.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Modelo diferente de FH e FM " +
                                                                            "deve retornar HttpStatusCode.BadRequest");
         }
 
@@ -412,24 +384,22 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year - 1,
                 AnoModelo = DateTime.Now.Year
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano de Fabricação menor que o atual " +
+            Assert.True(response1.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano de Fabricação menor que o atual " +
                                                                            "deve retornar HttpStatusCode.BadRequest");
         }
 
@@ -446,24 +416,22 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year + 1,
                 AnoModelo = DateTime.Now.Year
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano de Fabricação maoir que o atual " +
+            Assert.True(response1.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano de Fabricação maoir que o atual " +
                                                                            "deve retornar HttpStatusCode.BadRequest");
         }
 
@@ -480,24 +448,22 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 1
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.OK, "Put para atualizar Caminhão com Ano do Modelo subsequente ao atual " +
+            Assert.True(response1.StatusCode == HttpStatusCode.OK, "Put para atualizar Caminhão com Ano do Modelo subsequente ao atual " +
                                                                    "deve retornar HttpStatusCode.OK");
         }
 
@@ -514,24 +480,22 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year + 2
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano do Modelo maior que o subsequente ao atual " +
+            Assert.True(response1.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano do Modelo maior que o subsequente ao atual " +
                                                                            "deve retornar HttpStatusCode.BadRequest");
         }
 
@@ -548,24 +512,22 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            var response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
-            var response1 = await _testClient.GetAsync($"{route}obtercaminhaoporid?id={caminhao1.Id}");
-            Caminhao caminhao2 = await response1.Content.ReadAsAsync<Caminhao>();
 
-            Caminhao caminhao3 = new()
+            Caminhao caminhao2 = new()
             {
-                Id = caminhao2.Id,
+                Id = caminhao1.Id,
                 Marca = "Volvo",
                 Modelo = Modelo.FH,
                 AnoFabricacao = DateTime.Now.Year,
                 AnoModelo = DateTime.Now.Year - 1
             };
 
-            var response3 = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao3);
+            var response1 = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao2);
 
             // Assert
-            Assert.True(response3.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano do Modelo menor que o atual " +
+            Assert.True(response1.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Ano do Modelo menor que o atual " +
                                                                            "deve retornar HttpStatusCode.BadRequest");
         }
 
@@ -576,7 +538,7 @@ namespace CaminhaoApi.Test.Controllers
             Caminhao caminhao = null;
 
             // Act
-            var response = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao);
+            var response = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.BadRequest, "Put para atualizar Caminhão com Objeto nulo " +
@@ -597,7 +559,7 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            var response = await _testClient.PutAsJsonAsync($"{route}atualizarcaminhao", caminhao);
+            var response = await _httpClientTest.PutAsJsonAsync($"{_routeCaminhao}atualizarcaminhao", caminhao);
 
             // Assert
             Assert.True(response.StatusCode == HttpStatusCode.InternalServerError, "Put para atualizar Caminhão com Id inexistente " +
@@ -617,10 +579,10 @@ namespace CaminhaoApi.Test.Controllers
             };
 
             // Act
-            HttpResponseMessage response = await _testClient.PostAsJsonAsync($"{route}cadastrarcaminhao", caminhao);
+            HttpResponseMessage response = await _httpClientTest.PostAsJsonAsync($"{_routeCaminhao}cadastrarcaminhao", caminhao);
             Caminhao caminhao1 = await response.Content.ReadAsAsync<Caminhao>();
 
-            HttpResponseMessage response1 = await _testClient.DeleteAsync($"{route}removercaminhao?id={caminhao1.Id}");
+            HttpResponseMessage response1 = await _httpClientTest.DeleteAsync($"{_routeCaminhao}removercaminhao?id={caminhao1.Id}");
 
             // Assert
             Assert.True(response1.StatusCode == HttpStatusCode.OK, "Delete para remover Caminhão deve retornar HttpStatusCode.OK");
@@ -633,10 +595,11 @@ namespace CaminhaoApi.Test.Controllers
             var id = "IdInexistente2";
 
             // Act
-            HttpResponseMessage response = await _testClient.DeleteAsync($"{route}removercaminhao?id={id}");
+            HttpResponseMessage response = await _httpClientTest.DeleteAsync($"{_routeCaminhao}removercaminhao?id={id}");
 
             // Assert
-            Assert.True(response.StatusCode == HttpStatusCode.InternalServerError, "Delete para remover Caminhão deve retornar HttpStatusCode.InternalServerError");
+            Assert.True(response.StatusCode == HttpStatusCode.InternalServerError, "Delete para remover Caminhão com Id inexistente " +
+                                                                                   "deve retornar HttpStatusCode.InternalServerError");
         }
     }
 }

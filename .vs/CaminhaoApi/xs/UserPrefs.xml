@@ -1,8 +1,10 @@
 ﻿<Properties StartupConfiguration="{E8BA1B0E-5C8C-4687-943D-DC97F687A610}|Keymaster.Api.Application">
-  <MonoDevelop.Ide.Workbench ActiveDocument="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CaminhaoApi.Test/Services/ServiceCaminhaoTest.cs">
     <Files>
-      <File FileName="CaminhaoApi.Application/Controllers/CaminhaoController.cs" Line="32" Column="37" />
-      <File FileName="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" Line="319" Column="17" />
+      <File FileName="CaminhaoApi.Test/Services/ServiceCaminhaoTest.cs" Line="14" Column="9" />
+      <File FileName="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" Line="59" Column="23" />
+      <File FileName="CaminhaoApi.Application/Startup.cs" Line="30" Column="26" />
+      <File FileName="CaminhaoApi.Infrastructure/Database/Contexts/CrudContext.cs" Line="92" Column="41" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -11,30 +13,44 @@
             <Node name="src" expanded="True">
               <Node name="CaminhaoApi.Application" expanded="True">
                 <Node name="Controllers" expanded="True" />
+                <Node name="Services" expanded="True" />
                 <Node name="appsettings.json" expanded="True" />
               </Node>
               <Node name="CaminhaoApi.Domain" expanded="True">
                 <Node name="CaminhaoAggregate" expanded="True" />
               </Node>
-              <Node name="CaminhaoApi.Infrastructure" expanded="True" />
+              <Node name="CaminhaoApi.Infrastructure" expanded="True">
+                <Node name="Database" expanded="True">
+                  <Node name="Contexts" expanded="True" />
+                </Node>
+              </Node>
             </Node>
             <Node name="test" expanded="True">
               <Node name="CaminhaoApi.Test" expanded="True">
-                <Node name="Controllers" expanded="True">
-                  <Node name="CaminhaoControllerTest.cs" selected="True" />
+                <Node name="Controllers" expanded="True" />
+                <Node name="Services" expanded="True">
+                  <Node name="ServiceCaminhaoTest.cs" selected="True" />
                 </Node>
               </Node>
             </Node>
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>appFactory.Services.GetRequiredService&lt;IServiceCaminhao&gt;()</Value>
+        </State>
+      </Pad>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">
         <State name="__root__">
-          <Node name="CaminhaoApi" expanded="True" selected="True">
+          <Node name="CaminhaoApi" expanded="True">
             <Node name="test" expanded="True">
               <Node name="CaminhaoApi.Test" expanded="True">
                 <Node name="CaminhaoApi.Test.Controllers" expanded="True">
                   <Node name="CaminhaoControllerTest" expanded="True" />
+                  <Node name="ServiceCaminhaoTest" expanded="True">
+                    <Node name="ObterCaminhaoPorIdInexistenteDeveRetornarCaminhaoNulo" selected="True" />
+                  </Node>
                 </Node>
               </Node>
             </Node>
@@ -46,7 +62,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/plamedi/Projects/source/repos/CaminhaoApi/CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" relfile="CaminhaoApi.Test/Controllers/CaminhaoControllerTest.cs" line="66" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.src.CaminhaoApi.Application PreferredExecutionTarget="/Applications/Safari.app" />
